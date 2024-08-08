@@ -1,83 +1,131 @@
-//Human Choice:
-function getHumanChoice(){
-    let humanChoice = prompt("Rock, Paper Or Scissor");
-    return humanChoice.toUpperCase();
-}
+
+const humanSelection = document.querySelector('div.user.selection');
+const botSelection = document.querySelector('div.bot.selection');
+const humanScoreSelection = document.querySelector('div.user.score');
+const botScoreSelection = document.querySelector('div.bot.score');
+const result = document.querySelector(`div.result`);
 
 
+let playersChoice; 
+let computerChoice = `....`
+let humanScore = 0, computerScore = 0;
 
-//Computer Choice
-function getComputerChoice(){
-    let max = 3;
-    let computerChoice = Math.floor(Math.random()*max)
-    //console.log(computerChoice);
-    if(computerChoice == 1){
-        computerChoice = "ROCK";
-    }else if(computerChoice == 2){
-        computerChoice = "PAPER";
-    }else{
-        computerChoice = "SCISSORS";
-    }
-    return computerChoice;
-};
+humanScoreSelection.textContent = `User:   ${humanScore}`;
+botScoreSelection.textContent = `Bot:  ${computerScore}`;
+
+botSelection.textContent = `Computer Says: ${computerChoice}`;
+result.textContent = `Yet to Play. Make your move`;
+
+
+        humanSelection.addEventListener("click", (event) => {
+            let target = event.target;
+
+            switch(target.id) {
+                case 'rock':
+                    playersChoice = "ROCK";
+                    break;
+                case 'paper':
+                    playersChoice="PAPER";
+                    break;
+                case 'scissor':
+                    playersChoice ="SCISSORS"
+                    break;
+            }
+
+
+            //Computer Choice
+            function getComputerChoice(){
+                let max = 3, 
+                computerChoice = Math.floor(Math.random()*max);
+
+                if(computerChoice == 1){
+                computerChoice = "ROCK";
+                }else if(computerChoice == 2){
+                computerChoice = "PAPER";
+                }else{
+                computerChoice = "SCISSORS";
+            }
+            return computerChoice;
+            };
+
+            computerChoice = getComputerChoice();
+            botSelection.textContent = `Computer Says: ${computerChoice}`;
+
+            function playRound(playersChoice,computerChoice){
+                if(playersChoice == computerChoice){
+                    return 0;
+                }else if(playersChoice == "ROCK" && computerChoice == "SCISSORS" || playersChoice == "PAPER" && computerChoice == "ROCK"){
+                    return 1;
+                }else{
+                    return 2;
+                }
+            }
+
+            let digitResult = playRound(playersChoice,computerChoice);
+            console.log(digitResult);
+
+            function playMatch(){
+
+                if (humanScore >= 5 || computerScore >= 5) {
+                    result.textContent = `Game Over! Final Score - User: ${humanScore}, Bot: ${computerScore}`;
+                    return; // Stop the function execution
+                }
+                
+                    
+                    let humanChoice = playersChoice; 
+                    console.log(`USER: ${humanChoice}`);
+            
+                    let computerChoice = getComputerChoice();
+                    console.log(`COMPUTER: ${computerChoice}`)
+            
+                    let newScore = digitResult;
+            
+            
+                    console.log(`Total Score`+ `\n` +
+                        `Your: ${humanChoice}` + `\n` +
+                        `Computer: ${computerScore}`
+                    )
+                
+            
+            
+            
+                if(digitResult == 0){
+                    console.log("*********DRAW*********");
+                    result.textContent = `Draw. Go again`;
+                }
+                else if(digitResult == 1){
+                    console.log("*********WIN*********")
+                    result.textContent = `You Win. Keep the streak'`;
+                    ++humanScore;
+                }
+                else{
+                    console.log("*********LOSE*********");
+                    result.textContent = `You lose. Strike again`;
+                    ++computerScore;
+                }
+                humanScoreSelection.textContent = `User:   ${humanScore}`
+                botScoreSelection.textContent = `Bot:  ${computerScore}`
+            }
+
+            playMatch();
+
+
+        });
+
+
+        /* function getHumanChoice(playersChoice){
+            return playersChoice;
+        } */
+    
+
+    
+    
+
+    
+    //comparing with the basis 1 = rock, 2 = paper, 3 = scissors
+    
+    
     
 
 
-
-//comparing with the basis 1 = rock, 2 = paper, 3 = scissors
-function playRound(humanChoice,computerChoice){
-if(humanChoice == computerChoice){
-    return 0;
-}else if(humanChoice == "ROCK" && computerChoice == "SCISSORS" || humanChoice == "PAPER" && computerChoice == "ROCK"){
-    return 1;
-}else{
-    return 2;
-}
-}
-
-
-function playMatch(){
-    let humanScore = 0, computerScore = 0;
-    for(let i = 1; i <= 5; i++){
-
-        console.log(`ROUND: ` + i);
-        let humanChoice = getHumanChoice(); 
-        console.log(`You entered ${humanChoice}`);
-
-        let computerChoice = getComputerChoice();
-        console.log(`Computer's Choice: ${computerChoice}`)
-
-        let newScore = playRound(humanChoice, computerChoice);
-
-        if(newScore == 0){
-            console.log("Its a draw");
-        }else if(newScore == 1){
-            console.log("YOU WIN!!")
-            ++humanScore;
-        }else{
-            console.log("YOU LOSE!!")
-            ++computerScore;
-        } 
-        console.log(`Total Score`+ `\n` +
-            `Your: ${humanScore}` + `\n` +
-            `Computer: ${computerScore}`
-        )
-    }
-    if(computerScore == humanScore){
-        console.log("*********Its a Draw. Go for another round*********");
-    }
-    else if(computerScore > humanScore){
-        console.log("*********You Lose. Computer Wins*********")
-    }
-    else{
-        console.log("*********You Win. Computer Lose*********");
-    }
-
-}
-
-playMatch();
-
-
-
-
-
+    
